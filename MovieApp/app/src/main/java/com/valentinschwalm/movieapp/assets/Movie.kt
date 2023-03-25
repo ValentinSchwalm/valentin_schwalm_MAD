@@ -140,3 +140,9 @@ fun getMovies(): List<Movie> {
 
         )
 }
+
+fun getMovieByID(movieID: String?): Movie? {
+
+    var movie = getMovies().filter { it.id == movieID }
+    return if (movie.isNotEmpty()) movie[0] else null
+}

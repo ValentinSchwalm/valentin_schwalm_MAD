@@ -22,6 +22,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.BlendMode.Companion.Screen
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -48,14 +49,14 @@ fun HomeScreen(navController: NavController) {
         color = MaterialTheme.colors.background
     ) {
         Column {
-            TopAppBar()
+            TopAppBar(navController = navController)
             MyList(navController = navController)
         }
     }
 }
 
 @Composable
-fun TopAppBar() {
+fun TopAppBar(navController: NavController) {
 
     var items = listOf("Favorites")
     var expanded by remember { mutableStateOf(false) }
@@ -96,7 +97,11 @@ fun TopAppBar() {
                     menuIcon = Icons.Default.Menu
                 }) {
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                       navController.navigate(Screens.FavoriteScreen.name)
+                            },
                         horizontalArrangement = Arrangement.End,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -122,7 +127,7 @@ fun MyList(movies: List<Movie> = getMovies(), navController: NavController){
         items(movies) {movie ->
             MovieRow(movie = movie) { movieId ->
                 Log.d("MainContent", "My Callback value: $movieId")
-                navController.navigate(Screens.Detailscreen.name)
+                navController.navigate("${Screens.Detailscreen.name}/${movieId}")
             }
         }
     }
@@ -155,7 +160,7 @@ fun MovieRow(movie: Movie, onItemClick: (String) -> Unit) {
                 .clickable { onItemClick(movie.id) }
             ) {
                 val painter = rememberImagePainter(
-                    data = movie.images[0],
+                    data = if (movie.images.isNotEmpty()) movie.images[0] else R.drawable.imageerror,
                     builder = {
                         placeholder(R.drawable.imageplaceholder)
                         error(R.drawable.imageerror)
@@ -177,7 +182,8 @@ fun MovieRow(movie: Movie, onItemClick: (String) -> Unit) {
                     Icon(
                         tint = MaterialTheme.colors.secondary,
                         imageVector = Icons.Default.FavoriteBorder,
-                        contentDescription = "Add to favorites")
+                        contentDescription = "Add to favorites"
+                    )
                 }
             }
 
