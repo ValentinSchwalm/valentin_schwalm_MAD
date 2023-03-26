@@ -1,4 +1,4 @@
-package com.valentinschwalm.movieapp
+package com.valentinschwalm.movieapp.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
@@ -6,12 +6,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.valentinschwalm.movieapp.enums.Screens
 import com.valentinschwalm.movieapp.screens.DetailScreen
 import com.valentinschwalm.movieapp.screens.FavoriteScreen
 import com.valentinschwalm.movieapp.screens.HomeScreen
 
-const val movieID: String = "movieId"
+const val movieID = "movieID"
 
 @Composable
 fun MyNavigation() {
@@ -20,25 +19,25 @@ fun MyNavigation() {
 
     NavHost (
         navController = navController,
-        startDestination = Screens.Homescreen.name
+        startDestination = Screen.Home.route
     ) {
-        composable(route = Screens.Homescreen.name) {
+        composable(route = Screen.Home.route) {
             HomeScreen(navController = navController)
         }
 
-        composable(
-            route = "${Screens.Detailscreen.name}/{${movieID}}",
+        composable (
+            route = Screen.Detail.route + "/{$movieID}",
             arguments = listOf(navArgument(movieID) {
                 type = NavType.StringType
             })
-        ) {backStackEntry ->
+        ) { backStackEntry ->
             DetailScreen (
                 navController = navController,
                 movieID = backStackEntry.arguments?.getString(movieID)
             )
         }
 
-        composable(route = Screens.FavoriteScreen.name) {
+        composable(route = Screen.Favorite.route) {
             FavoriteScreen(navController = navController)
         }
     }

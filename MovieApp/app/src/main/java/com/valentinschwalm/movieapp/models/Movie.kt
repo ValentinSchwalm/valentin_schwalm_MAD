@@ -1,4 +1,4 @@
-package com.valentinschwalm.movieapp.assets
+package com.valentinschwalm.movieapp.models
 
 data class Movie(
     val id: String,
@@ -142,7 +142,6 @@ fun getMovies(): List<Movie> {
 }
 
 fun getMovieByID(movieID: String?): Movie? {
-
-    var movie = getMovies().filter { it.id == movieID }
-    return if (movie.isNotEmpty()) movie[0] else null
+    var filteredMovies = getMovies().filter { it.id == movieID }
+    return if (filteredMovies.isNotEmpty()) filteredMovies[0] else null
 }
