@@ -1,5 +1,8 @@
 package com.valentinschwalm.movieapp.screens
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -13,12 +16,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.valentinschwalm.movieapp.models.DropDownItem
 import com.valentinschwalm.movieapp.navigation.Screen
 import com.valentinschwalm.movieapp.ui.theme.Purple700
+import com.valentinschwalm.movieapp.viewmodels.MoviesViewModel
 import com.valentinschwalm.movieapp.widgets.RenderMovieList
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, viewModel: MoviesViewModel) {
 
     // A surface container using the 'background' color from the theme
     Surface(
@@ -27,7 +32,7 @@ fun HomeScreen(navController: NavController) {
     ) {
         Column {
             TopAppBar(navController = navController)
-            RenderMovieList(navController = navController)
+            RenderMovieList(movies = viewModel.movieList, navController = navController, viewModel = viewModel)
         }
     }
 }
@@ -35,7 +40,18 @@ fun HomeScreen(navController: NavController) {
 @Composable
 private fun TopAppBar(navController: NavController) {
 
-    var items = listOf("Favorites")
+    var items = listOf (
+        DropDownItem (
+            name = "Favorites",
+            icon = Icons.Default.Favorite,
+            route = Screen.Favorite.route
+        ),
+        DropDownItem (
+            name = "Add Movie",
+            icon = Icons.Default.AddCircle,
+            route = Screen.AddMovie.route
+        )
+    )
     var expanded by remember { mutableStateOf(false) }
     var selectedIndex by remember { mutableStateOf(0) }
     var menuIcon by remember { mutableStateOf(Icons.Default.Menu) }
@@ -65,10 +81,13 @@ private fun TopAppBar(navController: NavController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Purple700)
+                .animateContentSize(
+                    animationSpec = tween( easing = LinearOutSlowInEasing )
+                )
         ) {
 
-            items.forEachIndexed { index, itemName ->
-                TopAppBarItem(navController = navController, itemName = itemName) {
+            items.forEachIndexed { index, item ->
+                TopAppBarItem(navController = navController, item = item) {
                     selectedIndex = index
                     expanded = false
                     menuIcon = Icons.Default.Menu
@@ -79,29 +98,29 @@ private fun TopAppBar(navController: NavController) {
 }
 
 @Composable
-private fun TopAppBarItem(navController: NavController, itemName: String, onMenuClick: () -> Unit) {
+private fun TopAppBarItem(navController: NavController, item: DropDownItem, onMenuClick: () -> Unit) {
 
     DropdownMenuItem (onClick = { onMenuClick() }) {
         Row (
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
-                    navController.navigate(Screen.Favorite.route)
+                    navController.navigate(item.route)
                 },
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically
         ) {
+            Text (
+                text = item.name,
+                color = Color.White,
+                textAlign = TextAlign.Right
+            )
+
             Icon (
-                imageVector = Icons.Default.Favorite,
+                imageVector = item.icon,
                 contentDescription = "Open Options",
                 modifier = Modifier.padding(10.dp),
                 tint = Color.White
-            )
-
-            Text (
-                text = itemName,
-                color = Color.White,
-                textAlign = TextAlign.Right
             )
         }
     }

@@ -6,16 +6,22 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import com.valentinschwalm.movieapp.models.Movie
 import com.valentinschwalm.movieapp.navigation.Screen
-import com.valentinschwalm.movieapp.models.getMovies
+import com.valentinschwalm.movieapp.viewmodels.MoviesViewModel
 
 @Composable
-fun RenderMovieList(movies: List<Movie> = getMovies(), navController: NavController) {
+fun RenderMovieList(movies: List<Movie>, navController: NavController, viewModel: MoviesViewModel) {
 
-    LazyColumn{
+    LazyColumn {
         items(movies) {movie ->
-            MovieRow(movie = movie) { movieID ->
-                navController.navigate(Screen.Detail.withArgs(movieID))
-            }
+            MovieRow (
+                movie = movie,
+                onImageClick = { movieID ->
+                    navController.navigate(Screen.Detail.withArgs(movieID))
+                },
+                onFavoriteClick = {
+                    viewModel.toggleFavorite(movie)
+                }
+            )
         }
     }
 }

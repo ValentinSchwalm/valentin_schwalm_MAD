@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
@@ -21,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.valentinschwalm.movieapp.models.Movie
 
 @Composable
-fun MovieRow(movie: Movie, onItemClick: (String) -> Unit) {
+fun MovieRow(movie: Movie, onImageClick: (String) -> Unit, onFavoriteClick: () -> Boolean) {
 
     var expanded by remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState ( targetValue = if (expanded) -180f else 0f )
@@ -39,7 +40,7 @@ fun MovieRow(movie: Movie, onItemClick: (String) -> Unit) {
         elevation = 5.dp
     ) {
         Column {
-            MovieImage(movie = movie, onItemClick = onItemClick)
+            MovieImage(movie = movie, onImageClick = onImageClick, onFavoriteClick = onFavoriteClick)
 
             MovieExpandable(movie = movie, rotationState = rotationState) {
                 expanded = !expanded
@@ -53,12 +54,14 @@ fun MovieRow(movie: Movie, onItemClick: (String) -> Unit) {
 }
 
 @Composable
-private fun MovieImage (movie: Movie, onItemClick: (String) -> Unit) {
+private fun MovieImage (movie: Movie, onImageClick: (String) -> Unit, onFavoriteClick: () -> Boolean) {
+
+    var isFavorite by remember { mutableStateOf(movie.isFavorite) }
 
     Box(modifier = Modifier
         .height(150.dp)
         .fillMaxWidth()
-        .clickable { onItemClick(movie.id) }
+        .clickable { onImageClick(movie.id) }
     ) {
         WebImage(imageUrl = if (movie.images.isNotEmpty()) movie.images[0] else null, imageDescription = "Movie Poster")
 
@@ -67,11 +70,13 @@ private fun MovieImage (movie: Movie, onItemClick: (String) -> Unit) {
             .padding(10.dp),
             contentAlignment = Alignment.TopEnd
         ) {
-            Icon (
-                tint = MaterialTheme.colors.secondary,
-                imageVector = Icons.Default.FavoriteBorder,
-                contentDescription = "Add to favorites"
-            )
+            IconButton(onClick = { isFavorite = onFavoriteClick() }) {
+                Icon (
+                    tint = if (isFavorite) Color.Red else MaterialTheme.colors.secondary,
+                    imageVector = if (isFavorite)Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                    contentDescription = "Add to favorites"
+                )
+            }
         }
     }
 }
