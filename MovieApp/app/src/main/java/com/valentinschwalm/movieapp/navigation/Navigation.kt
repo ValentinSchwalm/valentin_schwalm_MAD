@@ -49,7 +49,7 @@ fun MyNavigation() {
         }
 
         composable(route = Screen.AddMovie.route) {
-            AddMovieScreen(navController = navController)
+            AddMovieScreen(navController = navController, viewModel = moviesViewModel)
         }
     }
 }

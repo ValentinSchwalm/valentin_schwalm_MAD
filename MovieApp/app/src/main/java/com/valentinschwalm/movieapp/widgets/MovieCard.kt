@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.valentinschwalm.movieapp.models.Movie
+import com.valentinschwalm.movieapp.viewmodels.MoviesViewModel
 
 @Composable
 fun MovieRow(movie: Movie, onImageClick: (String) -> Unit, onFavoriteClick: () -> Boolean) {
@@ -70,7 +71,9 @@ private fun MovieImage (movie: Movie, onImageClick: (String) -> Unit, onFavorite
             .padding(10.dp),
             contentAlignment = Alignment.TopEnd
         ) {
-            IconButton(onClick = { isFavorite = onFavoriteClick() }) {
+            IconButton(onClick = {
+                isFavorite = onFavoriteClick()
+            }) {
                 Icon (
                     tint = if (isFavorite) Color.Red else MaterialTheme.colors.secondary,
                     imageVector = if (isFavorite)Icons.Default.Favorite else Icons.Default.FavoriteBorder,
