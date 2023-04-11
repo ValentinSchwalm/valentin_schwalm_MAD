@@ -23,7 +23,7 @@ import com.valentinschwalm.movieapp.models.Movie
 import com.valentinschwalm.movieapp.viewmodels.MoviesViewModel
 
 @Composable
-fun MovieRow(movie: Movie, onImageClick: (String) -> Unit, onFavoriteClick: () -> Boolean) {
+fun MovieRow(movie: Movie, onImageClick: (String) -> Unit, onFavoriteClick: () -> Movie) {
 
     var expanded by remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState ( targetValue = if (expanded) -180f else 0f )
@@ -55,9 +55,10 @@ fun MovieRow(movie: Movie, onImageClick: (String) -> Unit, onFavoriteClick: () -
 }
 
 @Composable
-private fun MovieImage (movie: Movie, onImageClick: (String) -> Unit, onFavoriteClick: () -> Boolean) {
+private fun MovieImage (movie: Movie, onImageClick: (String) -> Unit, onFavoriteClick: () -> Movie) {
 
     var isFavorite by remember { mutableStateOf(movie.isFavorite) }
+    var _movie by remember { mutableStateOf(movie) }
 
     Box(modifier = Modifier
         .height(150.dp)
@@ -72,11 +73,13 @@ private fun MovieImage (movie: Movie, onImageClick: (String) -> Unit, onFavorite
             contentAlignment = Alignment.TopEnd
         ) {
             IconButton(onClick = {
-                isFavorite = onFavoriteClick()
+                _movie = onFavoriteClick()
+                isFavorite = _movie.isFavorite
             }) {
-                Icon (
-                    tint = if (isFavorite) Color.Red else MaterialTheme.colors.secondary,
-                    imageVector = if (isFavorite)Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+
+                Icon(
+                    tint = if (_movie.id == movie.id) (if (isFavorite) Color.Red else MaterialTheme.colors.secondary) else Color.Red,
+                    imageVector = if (_movie.id == movie.id) (if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder) else Icons.Default.Favorite,
                     contentDescription = "Add to favorites"
                 )
             }
@@ -116,7 +119,7 @@ private fun MovieDetails(movie: Movie) {
 
     Text (
         text = "Director: ${movie.director} \n" +
-                "Genre: ${movie.genre} \n" +
+                "Genre: ${movie.genre.joinToString()} \n" +
                 "Release: ${movie.year}",
         modifier = Modifier.padding(15.dp),
         style = MaterialTheme.typography.subtitle1

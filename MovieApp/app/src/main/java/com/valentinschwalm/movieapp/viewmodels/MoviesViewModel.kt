@@ -13,12 +13,12 @@ class MoviesViewModel constructor(movieRepository: IMovieRepository): ViewModel(
     private val _movieRepository = movieRepository
 
     // movie list
-    private val _movieList = _movieRepository.getMovies().toMutableStateList()
+    private val _movieList = _movieRepository.getMovies()
     val movieList: List<Movie>
         get() = _movieList
 
     fun getMovieByID(movieID: String?): Movie? {
-        var filteredMovies = _movieList.filter { it.id == movieID }
+        val filteredMovies = _movieList.filter { it.id == movieID }
         return if (filteredMovies.isNotEmpty()) filteredMovies[0] else null
     }
 
@@ -27,10 +27,11 @@ class MoviesViewModel constructor(movieRepository: IMovieRepository): ViewModel(
     val favoriteMovieList: List<Movie>
         get() = _favoriteMovieList
 
-    fun toggleFavorite(movie: Movie): Boolean {
-        if (_favoriteMovieList.contains(movie)) _favoriteMovieList.remove(movie) else _favoriteMovieList.add(movie)
+    fun toggleFavorite(movie: Movie): Movie {
+
         movie.isFavorite = !movie.isFavorite
-        return movie.isFavorite
+        if (_favoriteMovieList.contains(movie)) _favoriteMovieList.remove(movie) else _favoriteMovieList.add(movie)
+        return movie
     }
 
 
@@ -121,11 +122,11 @@ class MoviesViewModel constructor(movieRepository: IMovieRepository): ViewModel(
 
 
     // add movie
-    var movieID = 0
+    private var movieID = mutableStateOf(0)
 
     fun addMovie() {
 
-        movieID++
+        movieID.value++
 
         var genre: ArrayList<Genre> = ArrayList()
 
@@ -136,7 +137,7 @@ class MoviesViewModel constructor(movieRepository: IMovieRepository): ViewModel(
         }
 
         var movie = Movie(
-            id = (1000 + movieID).toString(),
+            id = (1000 + movieID.value).toString(),
             title = title.value,
             year = year.value,
             genre = genre,
@@ -148,8 +149,12 @@ class MoviesViewModel constructor(movieRepository: IMovieRepository): ViewModel(
             isFavorite = false
         )
 
-        _movieList.add(movie)
+        println("First ${_movieList.count()} + movie ID $movieID")
+        //_movieList.add(movie)
+        _movieRepository.addMovie(movie)
 
         println("///////////// MOVIE ADDED")
+        println("Second ${_movieList.count()}  ${_movieList.last().title}")
+        println("Movie List ${movieList.count()}  ${movieList.last().title}")
     }
 }
