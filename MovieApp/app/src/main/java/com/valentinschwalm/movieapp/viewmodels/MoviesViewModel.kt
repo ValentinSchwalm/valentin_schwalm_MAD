@@ -149,12 +149,33 @@ class MoviesViewModel constructor(movieRepository: IMovieRepository): ViewModel(
             isFavorite = false
         )
 
-        println("First ${_movieList.count()} + movie ID $movieID")
-        //_movieList.add(movie)
         _movieRepository.addMovie(movie)
 
-        println("///////////// MOVIE ADDED")
-        println("Second ${_movieList.count()}  ${_movieList.last().title}")
-        println("Movie List ${movieList.count()}  ${movieList.last().title}")
+        resetAddedMovie()
+    }
+
+    private fun resetAddedMovie() {
+
+        title.value = ""
+        validateTitle()
+
+        year.value = ""
+        validateYear()
+
+        for (i in genreItems.value) {
+            i.isSelected = false
+        }
+        validateGenres()
+
+        director.value = ""
+        validateDirector()
+
+        actors.value = ""
+        validateActors()
+
+        plot.value = ""
+
+        rating.value = ""
+        validateRating()
     }
 }

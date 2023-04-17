@@ -23,6 +23,7 @@ import com.valentinschwalm.movieapp.R
 import com.valentinschwalm.movieapp.models.Genre
 import com.valentinschwalm.movieapp.models.ListItemSelectable
 import com.valentinschwalm.movieapp.models.Movie
+import com.valentinschwalm.movieapp.navigation.Screen
 import com.valentinschwalm.movieapp.viewmodels.MoviesViewModel
 import com.valentinschwalm.movieapp.widgets.SimpleAppBar
 
@@ -36,7 +37,7 @@ fun AddMovieScreen(navController: NavController, viewModel: MoviesViewModel){
             SimpleAppBar(navController = navController, title = "Add Movie")
         },
     ) { padding ->
-        MainContent(Modifier.padding(padding), viewModel)
+        MainContent(Modifier.padding(padding), viewModel, navController)
     }
 }
 
@@ -61,7 +62,7 @@ private fun DrawWarning(message: String) {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun MainContent(modifier: Modifier = Modifier, viewModel: MoviesViewModel) {
+fun MainContent(modifier: Modifier = Modifier, viewModel: MoviesViewModel, navController: NavController) {
     Surface(
         modifier = modifier
             .fillMaxWidth()
@@ -75,22 +76,6 @@ fun MainContent(modifier: Modifier = Modifier, viewModel: MoviesViewModel) {
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.Start
         ) {
-
-            /*
-            val genres = Genre.values().toList()
-
-            var genreItems by remember {
-                mutableStateOf(
-                    genres.map { genre ->
-                        ListItemSelectable(
-                            title = genre.toString(),
-                            isSelected = false
-                        )
-                    }
-                )
-            }
-
-             */
 
             OutlinedTextField(
                 value = viewModel.title.value,
@@ -223,7 +208,10 @@ fun MainContent(modifier: Modifier = Modifier, viewModel: MoviesViewModel) {
 
             Button(
                 enabled = viewModel.isAddButtonEnabled.value,
-                onClick = { viewModel.addMovie() }) {
+                onClick = {
+                    viewModel.addMovie()
+                    navController.navigate(Screen.Home.route)
+                }) {
                 Text(text = stringResource(R.string.add))
             }
         }

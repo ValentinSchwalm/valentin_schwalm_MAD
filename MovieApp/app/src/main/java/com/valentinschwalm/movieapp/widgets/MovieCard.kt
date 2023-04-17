@@ -20,7 +20,6 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.valentinschwalm.movieapp.models.Movie
-import com.valentinschwalm.movieapp.viewmodels.MoviesViewModel
 
 @Composable
 fun MovieRow(movie: Movie, onImageClick: (String) -> Unit, onFavoriteClick: () -> Movie) {
@@ -58,7 +57,7 @@ fun MovieRow(movie: Movie, onImageClick: (String) -> Unit, onFavoriteClick: () -
 private fun MovieImage (movie: Movie, onImageClick: (String) -> Unit, onFavoriteClick: () -> Movie) {
 
     var isFavorite by remember { mutableStateOf(movie.isFavorite) }
-    var _movie by remember { mutableStateOf(movie) }
+    var rememberMovie by remember { mutableStateOf(movie) }
 
     Box(modifier = Modifier
         .height(150.dp)
@@ -73,13 +72,13 @@ private fun MovieImage (movie: Movie, onImageClick: (String) -> Unit, onFavorite
             contentAlignment = Alignment.TopEnd
         ) {
             IconButton(onClick = {
-                _movie = onFavoriteClick()
-                isFavorite = _movie.isFavorite
+                rememberMovie = onFavoriteClick()
+                isFavorite = rememberMovie.isFavorite
             }) {
 
                 Icon(
-                    tint = if (_movie.id == movie.id) (if (isFavorite) Color.Red else MaterialTheme.colors.secondary) else Color.Red,
-                    imageVector = if (_movie.id == movie.id) (if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder) else Icons.Default.Favorite,
+                    tint = if (rememberMovie.id == movie.id) (if (isFavorite) Color.Red else MaterialTheme.colors.secondary) else Color.Red,
+                    imageVector = if (rememberMovie.id == movie.id) (if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder) else Icons.Default.Favorite,
                     contentDescription = "Add to favorites"
                 )
             }
