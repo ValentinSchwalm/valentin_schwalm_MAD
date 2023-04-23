@@ -13,19 +13,30 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.valentinschwalm.movieapp.models.DropDownItem
 import com.valentinschwalm.movieapp.navigation.Screen
+import com.valentinschwalm.movieapp.navigation.movieID
 import com.valentinschwalm.movieapp.ui.theme.Purple700
+import com.valentinschwalm.movieapp.utils.InjectorUtils
+import com.valentinschwalm.movieapp.viewmodels.HomescreenViewModel
 import com.valentinschwalm.movieapp.viewmodels.MoviesViewModel
 import com.valentinschwalm.movieapp.widgets.RenderMovieList
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @Composable
-fun HomeScreen(navController: NavController, viewModel: MoviesViewModel) {
+fun HomeScreen(navController: NavController) {
+
+    val viewModel: HomescreenViewModel = viewModel(
+        factory = InjectorUtils.provideHomeScreenViewModelFactory(LocalContext.current)
+    )
+
+    var coroutineScope = rememberCoroutineScope()
 
     // A surface container using the 'background' color from the theme
     Surface(
@@ -39,7 +50,11 @@ fun HomeScreen(navController: NavController, viewModel: MoviesViewModel) {
                 onImageClick = { movieID ->
                     navController.navigate(Screen.Detail.withArgs(movieID))
                 },
-                viewModel = viewModel
+                onFavoriteClick = { movieID->
+                    coroutineScope.launch {
+                        viewModel.toggleFavorite(movieID)
+                    }
+                }
             )
         }
     }

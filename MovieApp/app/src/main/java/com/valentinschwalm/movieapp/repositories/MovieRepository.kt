@@ -15,5 +15,5 @@ class MovieRepository(private val movieDAO: IMovieDAO) {
 
     fun getFavorite(): Flow<List<Movie>> = movieDAO.getFavorite()
 
-    fun getByID(movieID: String): Movie = movieDAO.getByID(movieID)
+    suspend fun getByID(movieID: String): Movie = movieDAO.getByID(movieID)
 }

@@ -13,23 +13,32 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.valentinschwalm.movieapp.R
 import com.valentinschwalm.movieapp.models.Genre
 import com.valentinschwalm.movieapp.models.ListItemSelectable
 import com.valentinschwalm.movieapp.models.Movie
 import com.valentinschwalm.movieapp.navigation.Screen
+import com.valentinschwalm.movieapp.utils.InjectorUtils
+import com.valentinschwalm.movieapp.viewmodels.AddMovieViewModel
 import com.valentinschwalm.movieapp.viewmodels.MoviesViewModel
 import com.valentinschwalm.movieapp.widgets.SimpleAppBar
 import kotlinx.coroutines.launch
 
 @Composable
-fun AddMovieScreen(navController: NavController, viewModel: MoviesViewModel) {
+fun AddMovieScreen(navController: NavController) {
+
+    val viewModel: AddMovieViewModel = viewModel(
+        factory = InjectorUtils.provideAddMovieScreenViewModelFactory(LocalContext.current)
+    )
+
     val scaffoldState = rememberScaffoldState()
 
     Scaffold(
@@ -63,7 +72,7 @@ private fun DrawWarning(message: String) {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun MainContent(modifier: Modifier = Modifier, viewModel: MoviesViewModel, navController: NavController) {
+fun MainContent(modifier: Modifier = Modifier, viewModel: AddMovieViewModel, navController: NavController) {
     Surface(
         modifier = modifier
             .fillMaxWidth()

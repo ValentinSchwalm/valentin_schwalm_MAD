@@ -8,14 +8,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.valentinschwalm.movieapp.data.MovieDatabase
-import com.valentinschwalm.movieapp.models.MovieViewModelFactory
-import com.valentinschwalm.movieapp.repositories.MovieRepository
 import com.valentinschwalm.movieapp.screens.AddMovieScreen
 import com.valentinschwalm.movieapp.screens.DetailScreen
 import com.valentinschwalm.movieapp.screens.FavoriteScreen
 import com.valentinschwalm.movieapp.screens.HomeScreen
-import com.valentinschwalm.movieapp.viewmodels.MoviesViewModel
+import com.valentinschwalm.movieapp.utils.InjectorUtils
+import com.valentinschwalm.movieapp.viewmodels.DetailscreenViewModel
 
 const val movieID = "movieID"
 
@@ -23,18 +21,16 @@ const val movieID = "movieID"
 fun MyNavigation() {
     val navController = rememberNavController()
 
-    val database = MovieDatabase.getDatabase(LocalContext.current)
-    val repository = MovieRepository(database.movieDAO())
-    val factory = MovieViewModelFactory(repository)
-
-    val movieViewModel: MoviesViewModel = viewModel(factory = factory)
+    val detailscreenViewModel: DetailscreenViewModel = viewModel(
+        factory = InjectorUtils.provideDetailScreenViewModelFactory(LocalContext.current)
+    )
 
     NavHost (
         navController = navController,
         startDestination = Screen.Home.route
     ) {
         composable(route = Screen.Home.route) {
-            HomeScreen(navController = navController, movieViewModel)
+            HomeScreen(navController = navController)
         }
 
         composable (
@@ -45,17 +41,17 @@ fun MyNavigation() {
         ) { backStackEntry ->
             DetailScreen (
                 navController = navController,
-                viewModel = movieViewModel,
+                viewModel = detailscreenViewModel,
                 movieID = backStackEntry.arguments?.getString(movieID)
             )
         }
 
         composable(route = Screen.Favorite.route) {
-            FavoriteScreen(navController = navController, viewModel = movieViewModel)
+            FavoriteScreen(navController = navController)
         }
 
         composable(route = Screen.AddMovie.route) {
-            AddMovieScreen(navController = navController, viewModel = movieViewModel)
+            AddMovieScreen(navController = navController)
         }
     }
 }

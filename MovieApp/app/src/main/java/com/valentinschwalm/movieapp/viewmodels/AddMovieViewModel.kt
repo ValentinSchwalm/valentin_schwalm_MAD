@@ -3,11 +3,16 @@ package com.valentinschwalm.movieapp.viewmodels
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.valentinschwalm.movieapp.models.Converter
+import com.valentinschwalm.movieapp.models.Genre
+import com.valentinschwalm.movieapp.models.ListItemSelectable
+import com.valentinschwalm.movieapp.models.Movie
+import com.valentinschwalm.movieapp.repositories.MovieRepository
+import java.util.*
+import kotlin.collections.ArrayList
 
-/*
-class AddMovieViewModel constructor(repository: MovieRepository): ViewModel() {
 
-    var movieRepository = repository
+class AddMovieViewModel constructor(private val repository: MovieRepository): ViewModel() {
 
     //region add movie input fields
     var title: MutableState<String> = mutableStateOf("")
@@ -98,11 +103,8 @@ class AddMovieViewModel constructor(repository: MovieRepository): ViewModel() {
     //endregion
 
     //region add movie
-    private var movieID = mutableStateOf(0)
 
-    fun addMovie() {
-
-        movieID.value++
+    suspend fun addMovie() {
 
         var genre: ArrayList<Genre> = ArrayList()
 
@@ -113,7 +115,7 @@ class AddMovieViewModel constructor(repository: MovieRepository): ViewModel() {
         }
 
         var movie = Movie(
-            id = (1000 + movieID.value).toString(),
+            id = UUID.randomUUID().toString(),
             title = title.value,
             year = year.value,
             genre = Converter.genresToString(genre),
@@ -125,7 +127,7 @@ class AddMovieViewModel constructor(repository: MovieRepository): ViewModel() {
             isFavorite = false
         )
 
-        movieRepository.addMovie(movie)
+        repository.add(movie)
 
         resetAddedMovie()
     }
@@ -156,5 +158,3 @@ class AddMovieViewModel constructor(repository: MovieRepository): ViewModel() {
     }
     //endregion
 }
-
- */

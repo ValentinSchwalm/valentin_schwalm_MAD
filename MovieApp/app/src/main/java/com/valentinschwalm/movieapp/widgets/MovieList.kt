@@ -6,11 +6,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.rememberCoroutineScope
 import com.valentinschwalm.movieapp.models.Movie
+import com.valentinschwalm.movieapp.navigation.movieID
 import com.valentinschwalm.movieapp.viewmodels.MoviesViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun RenderMovieList(movies: State<List<Movie>>, onImageClick: (String) -> Unit, viewModel: MoviesViewModel) {
+fun RenderMovieList(movies: State<List<Movie>>, onImageClick: (String) -> Unit, onFavoriteClick: (String) -> Unit) {
 
     val coroutineScope = rememberCoroutineScope()
 
@@ -22,9 +23,7 @@ fun RenderMovieList(movies: State<List<Movie>>, onImageClick: (String) -> Unit, 
                     onImageClick(movieID)
                 },
                 onFavoriteClick = {
-                    coroutineScope.launch {
-                        viewModel.toggleFavorite(movie)
-                    }
+                    onFavoriteClick.invoke(movie.id)
                 }
             )
         }

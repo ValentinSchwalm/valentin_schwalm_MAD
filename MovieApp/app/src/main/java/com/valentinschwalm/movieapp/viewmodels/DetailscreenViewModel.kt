@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 
-class HomescreenViewModel(private val repository: MovieRepository) : ViewModel() {
+class DetailscreenViewModel(private val repository: MovieRepository) : ViewModel() {
 
     private val _movieList = MutableStateFlow(listOf<Movie>())
     val movieList: StateFlow<List<Movie>> = _movieList.asStateFlow()
@@ -30,5 +30,11 @@ class HomescreenViewModel(private val repository: MovieRepository) : ViewModel()
         val movie = repository.getByID(movieID)
         movie.isFavorite = !movie.isFavorite
         repository.update(movie)
+    }
+
+    fun getMovieByID(movieID: String): Movie {
+        return  _movieList.value.first{
+            it.id == movieID
+        }
     }
 }

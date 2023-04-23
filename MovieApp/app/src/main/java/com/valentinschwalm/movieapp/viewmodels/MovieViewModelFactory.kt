@@ -1,9 +1,8 @@
-package com.valentinschwalm.movieapp.models
+package com.valentinschwalm.movieapp.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.valentinschwalm.movieapp.repositories.MovieRepository
-import com.valentinschwalm.movieapp.viewmodels.MoviesViewModel
 
 class MovieViewModelFactory(private val repository: MovieRepository): ViewModelProvider.Factory {
 

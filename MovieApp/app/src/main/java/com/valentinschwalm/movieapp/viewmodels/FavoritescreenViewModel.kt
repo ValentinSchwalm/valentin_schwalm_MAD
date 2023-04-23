@@ -1,6 +1,5 @@
 package com.valentinschwalm.movieapp.viewmodels
 
-import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.valentinschwalm.movieapp.models.Movie
@@ -11,16 +10,16 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 
-class HomescreenViewModel(private val repository: MovieRepository) : ViewModel() {
+class FavoritescreenViewModel(private val repository: MovieRepository) : ViewModel() {
 
-    private val _movieList = MutableStateFlow(listOf<Movie>())
-    val movieList: StateFlow<List<Movie>> = _movieList.asStateFlow()
+    private val _favoriteMovieList = MutableStateFlow(listOf<Movie>())
+    val favoriteMovieList: StateFlow<List<Movie>> = _favoriteMovieList.asStateFlow()
 
     init {
         viewModelScope.launch {
-            repository.getAll().collect {movies ->
-                if (!movies.isNullOrEmpty()){
-                    _movieList.value = movies
+            repository.getFavorite().collect() { favoriteMovies ->
+                if (!favoriteMovies.isNullOrEmpty()) {
+                    _favoriteMovieList.value = favoriteMovies
                 }
             }
         }

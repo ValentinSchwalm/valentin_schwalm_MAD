@@ -19,5 +19,5 @@ interface IMovieDAO {
     fun getFavorite(): Flow<List<Movie>>
 
     @Query("SELECT * FROM movie WHERE id=:movieId")
-    fun getByID(movieId: String): Movie
+    suspend fun getByID(movieId: String): Movie
 }
