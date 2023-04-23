@@ -19,10 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.valentinschwalm.movieapp.models.Converter
 import com.valentinschwalm.movieapp.models.Movie
 
 @Composable
-fun MovieRow(movie: Movie, onImageClick: (String) -> Unit, onFavoriteClick: () -> Movie) {
+fun MovieRow(movie: Movie, onImageClick: (String) -> Unit, onFavoriteClick: () -> Unit) {
 
     var expanded by remember { mutableStateOf(false) }
     val rotationState by animateFloatAsState ( targetValue = if (expanded) -180f else 0f )
@@ -54,7 +55,7 @@ fun MovieRow(movie: Movie, onImageClick: (String) -> Unit, onFavoriteClick: () -
 }
 
 @Composable
-private fun MovieImage (movie: Movie, onImageClick: (String) -> Unit, onFavoriteClick: () -> Movie) {
+private fun MovieImage (movie: Movie, onImageClick: (String) -> Unit, onFavoriteClick: () -> Unit) {
 
     var isFavorite by remember { mutableStateOf(movie.isFavorite) }
     var rememberMovie by remember { mutableStateOf(movie) }
@@ -64,7 +65,7 @@ private fun MovieImage (movie: Movie, onImageClick: (String) -> Unit, onFavorite
         .fillMaxWidth()
         .clickable { onImageClick(movie.id) }
     ) {
-        WebImage(imageUrl = if (movie.images.isNotEmpty()) movie.images[0] else null, imageDescription = "Movie Poster")
+        WebImage(imageUrl = if (movie.images.isNotEmpty()) Converter.stringToImages(movie.images)[0] else null, imageDescription = "Movie Poster")
 
         Box(modifier = Modifier
             .fillMaxSize()
@@ -72,7 +73,8 @@ private fun MovieImage (movie: Movie, onImageClick: (String) -> Unit, onFavorite
             contentAlignment = Alignment.TopEnd
         ) {
             IconButton(onClick = {
-                rememberMovie = onFavoriteClick()
+                //rememberMovie = onFavoriteClick()
+                onFavoriteClick()
                 isFavorite = rememberMovie.isFavorite
             }) {
 
@@ -118,7 +120,7 @@ private fun MovieDetails(movie: Movie) {
 
     Text (
         text = "Director: ${movie.director} \n" +
-                "Genre: ${movie.genre.joinToString()} \n" +
+                "Genre: ${Converter.stringToGenre(movie.genre).joinToString()} \n" +
                 "Release: ${movie.year}",
         modifier = Modifier.padding(15.dp),
         style = MaterialTheme.typography.subtitle1

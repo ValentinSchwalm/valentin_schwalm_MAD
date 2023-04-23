@@ -26,9 +26,10 @@ import com.valentinschwalm.movieapp.models.Movie
 import com.valentinschwalm.movieapp.navigation.Screen
 import com.valentinschwalm.movieapp.viewmodels.MoviesViewModel
 import com.valentinschwalm.movieapp.widgets.SimpleAppBar
+import kotlinx.coroutines.launch
 
 @Composable
-fun AddMovieScreen(navController: NavController, viewModel: MoviesViewModel){
+fun AddMovieScreen(navController: NavController, viewModel: MoviesViewModel) {
     val scaffoldState = rememberScaffoldState()
 
     Scaffold(
@@ -206,10 +207,15 @@ fun MainContent(modifier: Modifier = Modifier, viewModel: MoviesViewModel, navCo
                 DrawWarning(message = "rating in form of a number required")
             }
 
+            val coroutineScope = rememberCoroutineScope()
+
             Button(
                 enabled = viewModel.isAddButtonEnabled.value,
                 onClick = {
-                    viewModel.addMovie()
+                    coroutineScope.launch {
+                        viewModel.addMovie()
+                    }
+
                     navController.navigate(Screen.Home.route)
                 }) {
                 Text(text = stringResource(R.string.add))

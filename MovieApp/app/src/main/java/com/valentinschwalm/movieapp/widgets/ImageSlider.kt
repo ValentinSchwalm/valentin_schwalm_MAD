@@ -9,13 +9,14 @@ import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.valentinschwalm.movieapp.models.Converter
 import com.valentinschwalm.movieapp.models.Movie
 
 @Composable
 fun ImageSlider(movie: Movie) {
 
     LazyRow {
-        items(movie.images) {movieImage ->
+        items(Converter.stringToImages(movie.images)) {movieImage ->
             ImageCard(imageUrl = movieImage)
         }
     }

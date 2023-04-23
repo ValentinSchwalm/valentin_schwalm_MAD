@@ -15,12 +15,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.valentinschwalm.movieapp.models.DropDownItem
 import com.valentinschwalm.movieapp.navigation.Screen
 import com.valentinschwalm.movieapp.ui.theme.Purple700
 import com.valentinschwalm.movieapp.viewmodels.MoviesViewModel
 import com.valentinschwalm.movieapp.widgets.RenderMovieList
+import kotlinx.coroutines.flow.collect
 
 @Composable
 fun HomeScreen(navController: NavController, viewModel: MoviesViewModel) {
@@ -32,7 +34,13 @@ fun HomeScreen(navController: NavController, viewModel: MoviesViewModel) {
     ) {
         Column {
             TopAppBar(navController = navController)
-            RenderMovieList(movies = viewModel.movieList, navController = navController, viewModel = viewModel)
+            RenderMovieList (
+                movies = viewModel.movieList.collectAsState(),
+                onImageClick = { movieID ->
+                    navController.navigate(Screen.Detail.withArgs(movieID))
+                },
+                viewModel = viewModel
+            )
         }
     }
 }
@@ -82,7 +90,7 @@ private fun TopAppBar(navController: NavController) {
                 .fillMaxWidth()
                 .background(Purple700)
                 .animateContentSize(
-                    animationSpec = tween( easing = LinearOutSlowInEasing )
+                    animationSpec = tween(easing = LinearOutSlowInEasing)
                 )
         ) {
 

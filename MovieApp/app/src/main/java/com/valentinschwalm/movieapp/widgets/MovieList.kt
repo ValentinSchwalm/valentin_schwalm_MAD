@@ -3,23 +3,28 @@ package com.valentinschwalm.movieapp.widgets
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
+import androidx.compose.runtime.State
+import androidx.compose.runtime.rememberCoroutineScope
 import com.valentinschwalm.movieapp.models.Movie
-import com.valentinschwalm.movieapp.navigation.Screen
 import com.valentinschwalm.movieapp.viewmodels.MoviesViewModel
+import kotlinx.coroutines.launch
 
 @Composable
-fun RenderMovieList(movies: List<Movie>, navController: NavController, viewModel: MoviesViewModel) {
+fun RenderMovieList(movies: State<List<Movie>>, onImageClick: (String) -> Unit, viewModel: MoviesViewModel) {
+
+    val coroutineScope = rememberCoroutineScope()
 
     LazyColumn {
-        items(movies) {movie ->
+        items(movies.value) {movie ->
             MovieRow (
                 movie = movie,
                 onImageClick = { movieID ->
-                    navController.navigate(Screen.Detail.withArgs(movieID))
+                    onImageClick(movieID)
                 },
                 onFavoriteClick = {
-                    viewModel.toggleFavorite(movie)
+                    coroutineScope.launch {
+                        viewModel.toggleFavorite(movie)
+                    }
                 }
             )
         }

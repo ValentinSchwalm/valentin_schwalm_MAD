@@ -2,53 +2,12 @@ package com.valentinschwalm.movieapp.viewmodels
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.valentinschwalm.movieapp.models.*
-import com.valentinschwalm.movieapp.repositories.MovieRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
-import java.util.UUID
 
-class MoviesViewModel(private val repository: MovieRepository): ViewModel() {
+/*
+class AddMovieViewModel constructor(repository: MovieRepository): ViewModel() {
 
-    init {
-        viewModelScope.launch {
-            repository.getAll().collect {movies ->
-                if (!movies.isNullOrEmpty()){
-                    _movieList.value = movies
-                }
-            }
-        }
-    }
-
-    //region movie list
-    private val _movieList = MutableStateFlow(listOf<Movie>())
-    val movieList: StateFlow<List<Movie>> = _movieList.asStateFlow()
-
-    fun getMovieByID(movieID: String?): Movie? {
-        val filteredMovies = _movieList.value.filter { it.id == movieID }
-        return if (filteredMovies.isNotEmpty()) filteredMovies[0] else null
-    }
-    //endregion
-
-    //region favorite list
-    private val _favoriteMovieList = _movieList.value.filter { it.isFavorite }.toMutableStateList()
-    val favoriteMovieList: List<Movie>
-        get() = _favoriteMovieList
-
-    suspend fun toggleFavorite(movie: Movie): Movie {
-
-        movie.isFavorite = !movie.isFavorite
-        if (_favoriteMovieList.contains(movie)) _favoriteMovieList.remove(movie) else _favoriteMovieList.add(movie)
-        repository.update(movie)
-        return movie
-    }
-    //endregion
+    var movieRepository = repository
 
     //region add movie input fields
     var title: MutableState<String> = mutableStateOf("")
@@ -139,8 +98,11 @@ class MoviesViewModel(private val repository: MovieRepository): ViewModel() {
     //endregion
 
     //region add movie
+    private var movieID = mutableStateOf(0)
 
-    suspend fun addMovie() {
+    fun addMovie() {
+
+        movieID.value++
 
         var genre: ArrayList<Genre> = ArrayList()
 
@@ -151,7 +113,7 @@ class MoviesViewModel(private val repository: MovieRepository): ViewModel() {
         }
 
         var movie = Movie(
-            id = UUID.randomUUID().toString(),
+            id = (1000 + movieID.value).toString(),
             title = title.value,
             year = year.value,
             genre = Converter.genresToString(genre),
@@ -163,7 +125,7 @@ class MoviesViewModel(private val repository: MovieRepository): ViewModel() {
             isFavorite = false
         )
 
-        repository.add(movie)
+        movieRepository.addMovie(movie)
 
         resetAddedMovie()
     }
@@ -193,5 +155,6 @@ class MoviesViewModel(private val repository: MovieRepository): ViewModel() {
         validateRating()
     }
     //endregion
-
 }
+
+ */

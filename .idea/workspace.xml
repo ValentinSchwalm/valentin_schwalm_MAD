@@ -5,7 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ed6fe244-ff44-4080-b187-d4c1ca4fb93a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/MovieApp/app/src/main/java/com/valentinschwalm/movieapp/data/IMovieDAO.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MovieApp/app/src/main/java/com/valentinschwalm/movieapp/data/MovieDatabase.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MovieApp/app/src/main/java/com/valentinschwalm/movieapp/models/MovieViewModelFactory.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MovieApp/app/src/main/java/com/valentinschwalm/movieapp/repositories/MovieRepository.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MovieApp/app/src/main/java/com/valentinschwalm/movieapp/viewmodels/AddMovieViewModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MovieApp/app/src/main/java/com/valentinschwalm/movieapp/viewmodels/HomescreenViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MovieApp/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/MovieApp/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MovieApp/app/src/main/java/com/valentinschwalm/movieapp/IMovieRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/MovieApp/app/src/main/java/com/valentinschwalm/movieapp/repositories/IMovieRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MovieApp/app/src/main/java/com/valentinschwalm/movieapp/models/Movie.kt" beforeDir="false" afterPath="$PROJECT_DIR$/MovieApp/app/src/main/java/com/valentinschwalm/movieapp/models/Movie.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MovieApp/app/src/main/java/com/valentinschwalm/movieapp/navigation/Navigation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/MovieApp/app/src/main/java/com/valentinschwalm/movieapp/navigation/Navigation.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MovieApp/app/src/main/java/com/valentinschwalm/movieapp/screens/AddMovieScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/MovieApp/app/src/main/java/com/valentinschwalm/movieapp/screens/AddMovieScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MovieApp/app/src/main/java/com/valentinschwalm/movieapp/screens/FavoriteScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/MovieApp/app/src/main/java/com/valentinschwalm/movieapp/screens/FavoriteScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MovieApp/app/src/main/java/com/valentinschwalm/movieapp/screens/HomeScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/MovieApp/app/src/main/java/com/valentinschwalm/movieapp/screens/HomeScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MovieApp/app/src/main/java/com/valentinschwalm/movieapp/viewmodels/MoviesViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/MovieApp/app/src/main/java/com/valentinschwalm/movieapp/viewmodels/MoviesViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MovieApp/app/src/main/java/com/valentinschwalm/movieapp/widgets/ImageSlider.kt" beforeDir="false" afterPath="$PROJECT_DIR$/MovieApp/app/src/main/java/com/valentinschwalm/movieapp/widgets/ImageSlider.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MovieApp/app/src/main/java/com/valentinschwalm/movieapp/widgets/MovieCard.kt" beforeDir="false" afterPath="$PROJECT_DIR$/MovieApp/app/src/main/java/com/valentinschwalm/movieapp/widgets/MovieCard.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MovieApp/app/src/main/java/com/valentinschwalm/movieapp/widgets/MovieList.kt" beforeDir="false" afterPath="$PROJECT_DIR$/MovieApp/app/src/main/java/com/valentinschwalm/movieapp/widgets/MovieList.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MovieApp/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/MovieApp/build.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,7 +45,8 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
-    "cidr.known.project.marker": "true"
+    "cidr.known.project.marker": "true",
+    "last_opened_file_path": "C:/Users/schwa/Documents/Valentin_Schwalm_MAD/valentin_schwalm_MAD/MovieApp"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />

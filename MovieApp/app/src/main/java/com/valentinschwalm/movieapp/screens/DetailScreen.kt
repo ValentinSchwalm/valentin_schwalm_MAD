@@ -12,6 +12,7 @@ import com.valentinschwalm.movieapp.widgets.HorizontalDivider
 import com.valentinschwalm.movieapp.widgets.ImageSlider
 import com.valentinschwalm.movieapp.widgets.MovieRow
 import com.valentinschwalm.movieapp.widgets.SimpleAppBar
+import kotlinx.coroutines.launch
 
 @Composable
 fun DetailScreen(navController: NavController,viewModel: MoviesViewModel, movieID: String?) {
@@ -20,12 +21,17 @@ fun DetailScreen(navController: NavController,viewModel: MoviesViewModel, movieI
 
     Column (horizontalAlignment = Alignment.CenterHorizontally) {
         SimpleAppBar(navController, movie?.title)
+        val coroutineScope = rememberCoroutineScope()
 
         movie?.let {
             MovieRow (
                 movie = movie,
                 onImageClick = { movieID -> println("movie: $movieID") },
-                onFavoriteClick = { viewModel.toggleFavorite(movie) }
+                onFavoriteClick = {
+                    coroutineScope.launch {
+                        viewModel.toggleFavorite(movie)
+                    }
+                }
             )
 
             HorizontalDivider(thickness = 2.dp, color = MaterialTheme.colors.secondary)
